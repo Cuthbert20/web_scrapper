@@ -11,7 +11,7 @@ def fetch_page(url):
         return None
 
 
-def extract_python_info(html_content):
+def extract_wiki_python_info(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
     
     # Extract the summary paragraph
@@ -32,4 +32,4 @@ if __name__ == "__main__":
     html_content = fetch_page(url)
     
     if html_content:
-        extract_python_info(html_content)
+        extract_wiki_python_info(html_content)
