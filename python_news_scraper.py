@@ -10,7 +10,7 @@ def fetch_page(url):
         print(f'Error: Unable to fetch the page. Status code: {response.status_code}')
         return None
 
-
+#info from wiki
 def extract_wiki_python_info(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
     
@@ -25,10 +25,31 @@ def extract_wiki_python_info(html_content):
         for item in toc.find_all("li"):
             print(item.text)
     else:
-        print('No table of contents found')        
+        print('No table of contents found')
+
+#info from python.org
+def extract_python_org_info(html_content):
+    soup = BeautifulSoup(html_content, "html.parser")
+    
+    # Extract the heading
+    heading = soup.find("h1", {"class": "page-title"}).text.strip()
+    print(f"Heading: {heading}\n")
+    
+    # Extract the summary paragraph
+    summary = soup.find("div", {"class": "introduction"}).text.strip()
+    print(f"Summary:\n{summary}\n")
+    
+    # Extract the list of topics
+    print("Topics:")
+    topics = soup.find("ul", {"class": "list-row-container menu"})
+    for li in topics.find_all("li"):
+        print(li.text.strip())
+
 
 if __name__ == "__main__":
-    url = "https://en.wikipedia.org/wiki/Python_(programming_language)"
+    urls = {"https://en.wikipedia.org/wiki/Python_(programming_language)": extract_python_org_info,
+            "https://www.python.org/about/": extract_python_org_info
+            }
     html_content = fetch_page(url)
     
     if html_content:
