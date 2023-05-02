@@ -44,10 +44,23 @@ def extract_python_org_info(html_content):
     # for li in topics.find_all("li"):
     #     print(li.text.strip())
 
+def extract_real_python_tutorials(html_content):
+    soup = BeautifulSoup(html_content, "html.parser")
+
+    # Extract the list of tutorials
+    print("List of tutorials:")
+    latest_tutorials = soup.find("div", {"class": "card-deck"}).find_all("h2")
+    print("Latest Tutorials:")
+    for tutorial in latest_tutorials:
+        print(tutorial.text.strip())
+
+
+
 
 if __name__ == "__main__":
     urls = {"https://en.wikipedia.org/wiki/Python_(programming_language)": extract_python_org_info,
-            "https://www.python.org/about/": extract_python_org_info
+            "https://www.python.org/about/": extract_python_org_info,
+            "https://realpython.com/": extract_real_python_tutorials,
             }
     for url, extraction_function in urls.items():
         print(f"Fetching information from: {url}\n")
