@@ -30,27 +30,29 @@ def extract_wiki_python_info(html_content):
 #info from python.org
 def extract_python_org_info(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
-    
-    # Extract the heading
-    heading = soup.find("h1", {"class": "page-title"}).text.strip()
-    print(f"Heading: {heading}\n")
-    
-    # Extract the summary paragraph
-    summary = soup.find("div", {"class": "introduction"}).text.strip()
-    print(f"Summary:\n{summary}\n")
+
+    #extract the title
+    title = soup.find("title")
+    if title is not None:
+        print(f"Title: {title.text}\n")
+    else:
+        print('No title found')     
     
     # Extract the list of topics
-    print("Topics:")
-    topics = soup.find("ul", {"class": "list-row-container menu"})
-    for li in topics.find_all("li"):
-        print(li.text.strip())
+    # print("Topics:")
+    # topics = soup.find("ul", {"class": "list-row-container menu"})
+    # for li in topics.find_all("li"):
+    #     print(li.text.strip())
 
 
 if __name__ == "__main__":
     urls = {"https://en.wikipedia.org/wiki/Python_(programming_language)": extract_python_org_info,
             "https://www.python.org/about/": extract_python_org_info
             }
-    html_content = fetch_page(url)
-    
-    if html_content:
-        extract_wiki_python_info(html_content)
+    for url, extraction_function in urls.items():
+        print(f"Fetching information from: {url}\n")
+        html_content = fetch_page(url)
+
+        if html_content:
+            extraction_function(html_content)
+            print("\n" + "=" * 80 + "\n")
